@@ -11,9 +11,9 @@ const models = {
 };
 
 const registry_templates = {
-  Vehicle: require('./models/vehicle').registry,
-  User: require('./models/user').registry,
-  Trip: require('./models/trip').registry
+  vehicles: require('./models/vehicle').registry,
+  users: require('./models/user').registry,
+  trips: require('./models/trip').registry
 };
 
 const adapter = new API.dbAdapters.Mongoose(models);
