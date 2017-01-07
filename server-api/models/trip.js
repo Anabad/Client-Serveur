@@ -13,7 +13,7 @@ const tripSchema = Schema({
 
 module.exports = {
   schema: tripSchema,
-  model: mongoose.model('User', tripSchema),
+  model: mongoose.model('Trip', tripSchema),
   registry: {
     urlTemplates: {
       "self": "http://127.0.0.1:3000/api/trips/{id}",
