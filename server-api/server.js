@@ -1,3 +1,5 @@
+const bodyParser = require('body-parser');
+const express = require('express');
 const app = require('express')();
 const API = require('json-api');
 const mongoose = require('mongoose');
@@ -55,6 +57,27 @@ app.route(`/api/:type(${db.join('|')})/:id`).get(apiReqHandler).patch(apiReqHand
 app.route(`/api/:type(${db.join('|')})/:id/relationships/:relationship`)
   .get(apiReqHandler).post(apiReqHandler).patch(apiReqHandler)
   .delete(apiReqHandler);
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
+app.post('/api/auth', function(req, res) {
+  if(!req.body.hasOwnProperty('username') ||
+      !req.body.hasOwnProperty('password')) {
+    res.statusCode = 400;
+    return res.send('Error 400: Post syntax incorrect.');
+  }
+  const username = req.body.username;
+  const password = req.body.password;
+  
+  models.User.findOne({ 'name': username, 'password' : password }, 'name', function (err, user) {
+    if (err) return res.send(false);
+    else return res.send(user != null);
+  })
+  
+});
 
 app.use(function(req, res, next) {
   front.sendError(new APIError(404, undefined, 'Not Found'), req, res);

@@ -6,6 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 const userSchema = Schema({
   name : {type: String, required:true},
+  password : {type: String, required:true},
   vehicles: [{ type: ObjectId, ref: 'Vehicle' }],
   trips: [{type: ObjectId, ref: 'Trip'}]
 });
