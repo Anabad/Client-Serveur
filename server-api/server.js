@@ -28,7 +28,7 @@ const front = new API.httpStrategies.Express(controller, docs);
 const apiReqHandler = front.apiRequest.bind(front);
 
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Cache-Control');
   res.header('Access-Control-Allow-Methods',
@@ -74,7 +74,7 @@ app.post('/api/auth', function(req, res) {
   
   models.User.findOne({ 'name': username, 'password' : password }, 'name', function (err, user) {
     if (err) return res.send(false);
-    else return res.send(user != null);
+    else return user == null? res.send(false) : res.send(user.id);
   })
   
 });
