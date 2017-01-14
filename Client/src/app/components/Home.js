@@ -1,5 +1,5 @@
 import React from "react";
-import { browserHistory } from "react-router";
+import { browserHistory, Link } from "react-router";
 
 import {CarInfo} from "./CarInfo";
 
@@ -14,7 +14,8 @@ export class Home extends React.Component {
                 <div className="top-bar" id="realEstateMenu">
                     <div className="top-bar-right">
                         <ul className="menu">
-                            <li><a href="#">My Account</a></li>
+                            <li><Link to={"/user"}>My Account</Link></li>
+                            <li><Link to={"/vehicles"}>My Vehicles</Link></li>
                             <li><a className="button" onClick={this.onLogout}>Log Out</a></li>
                         </ul>
                     </div>
