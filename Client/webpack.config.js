@@ -24,7 +24,10 @@ var config = {
     },
   devServer: {
     historyApiFallback: true
-  }
+  },
+    node: {
+        fs: "empty"
+    }
 };
 
 module.exports = config;

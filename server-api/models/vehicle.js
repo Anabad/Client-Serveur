@@ -6,7 +6,10 @@ const ObjectId = Schema.Types.ObjectId;
 
 const vehicleSchema = Schema({
   license : {type: String, required:true},
-  position: {type: String, required:true},
+  origin: {type: String, required:true},
+  destination: {type: String, required:true},
+  duration: {type: Number, required:true},
+  startTime: {type: Number, required:true},
   user: { type: ObjectId, ref: 'User' }
 });
 

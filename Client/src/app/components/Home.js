@@ -15,6 +15,7 @@ export class Home extends React.Component {
     };
     this.addCar = this.addCar.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.AddCarRequest = this.AddCarRequest.bind(this);
   }
 
   handleChange(event) {
@@ -65,14 +66,14 @@ export class Home extends React.Component {
                                         <div className="small-12 columns">
                                           <p>Add a car</p>
                                             <label>License
-                                                <input type="text" placeholder="License"/>
+                                                <input type="text" placeholder="License" ref={(c) => this.inputLicense = c}/>
                                             </label>
                                         </div>
                                         <div className="small-12 columns">
                                             <label>Position
                                                 <input type="number" placeholder="Position"/>
                                             </label>
-                                            <button className="button" onClick={this.addCar}>Add!</button>
+                                            <button className="button" onClick={this.AddCarRequest}>Add!</button>
                                         </div>
                                     </div>
                                 </form>
@@ -114,7 +115,10 @@ export class Home extends React.Component {
                                     returnValue.push(<CarInfo key={i.toString()}
                                                number={i}
                                                license={vehicleArray.data[i].attributes.license}
-                                               position={vehicleArray.data[i].attributes.position} />);
+                                               origin={vehicleArray.data[i].attributes.origin}
+                                               destination={vehicleArray.data[i].attributes.destination}
+                                               startTime={vehicleArray.data[i].attributes.startTime}
+                                               duration={vehicleArray.data[i].attributes.duration}/>);
                                   }
                                   return<span>{returnValue}</span>;
                                 }
@@ -127,37 +131,39 @@ export class Home extends React.Component {
                     <div className="row column">
                         <a className="button hollow expanded">Load More</a>
                     </div>
-
-              {/*Requests*/}
-              { /*this.state.addCarClicked ?
-                <Request
-                  url={'http://localhost:3000/api/vehicles'}
-                  method='post'
-                  accept='application/vnd.api+json'
-                  verbose={true}
-                  send={{"data": {
-                            "type": "vehicles",
-                              "attributes":
-                              {
-                               "license": "license",
-                               "position" : "Ivry"
-                               }
-                             }}}
-                >
-                  {
-                    ({error, result, loading}) => {
-                      if (loading) {
-                        return <div>loading...</div>;
-                      } else {
-                        return null;
-                      }
-                    }
-                  }
-                </Request> :
-                <span></span>*/
-              }
-
             </div>
         );
     }
+
+  //Send the request to the server to add a new car
+  AddCarRequest()
+  {
+    console.log("Add Car :");
+    var data = {"data":{
+      "type": "vehicles",
+      "attributes":
+      {
+        "license": "license",
+        "origin" : "Milan",
+        "destination" : "Paris",
+        "duration" : 10000000,
+        "startTime" : new Date().getTime()
+      }
+    }};
+    console.log(this.inputLicense);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:3000/api/vehicles',true);
+    xhr.setRequestHeader("Content-Type", "application/vnd.api+json");
+    xhr.send(JSON.stringify(data));
+
+    xhr.onreadystatechange = processRequest;
+
+    function processRequest(e) {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var response = JSON.parse(xhr.responseText);
+        console.log(response);
+      }
+    }
+  }
 }
