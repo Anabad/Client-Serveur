@@ -15,16 +15,15 @@ class Login extends React.Component {
     this.onLogin = this.onLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-  
-  
+
   onLogin() {
     this.setState({loginClicked: true});
     console.log(this.state.username);
   }
-  
+
+  //Handle the changes of input fields
   handleChange(event) {
     this.state[event.target.id] = event.target.value;
-    console.log(this.state);
   }
   
   render() {
@@ -90,7 +89,7 @@ const mapDispatchToProps = dispatch => ({
       type: "LOGIN",
       user
     })
-  },
+  }
 });
 
 export default connect(

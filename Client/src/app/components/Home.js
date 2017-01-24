@@ -1,36 +1,33 @@
 import React from "react";
 import { browserHistory, Link } from "react-router";
 import Request from 'react-http-request';
+import { connect } from 'react-redux';
 
 import {CarInfo} from "./CarInfo";
 
-export class Home extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addCarClicked: false,
-      username: "",
-      password: "",
-      userId: ""
+      inputLicense : "",
+      inputOrigin: "",
+      inputDestination: "",
+      user: "",
+      update : 0,
+      numberOfVehicles : 0
     };
-    this.addCar = this.addCar.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.AddCarRequest = this.AddCarRequest.bind(this);
+    this.addCarRequest = this.addCarRequest.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
+  //Handle the changes of input fields
   handleChange(event) {
     this.state[event.target.id] = event.target.value;
-    console.log(this.state);
   }
-
-
 
   onLogout() {
       browserHistory.push("/login");
-    }
-
-    addCar() {
-      this.setState({addCarClicked: true});
     }
 
     render() {
@@ -66,14 +63,17 @@ export class Home extends React.Component {
                                         <div className="small-12 columns">
                                           <p>Add a car</p>
                                             <label>License
-                                                <input type="text" placeholder="License" ref={(c) => this.inputLicense = c}/>
+                                                <input id="inputLicense" type="text" placeholder="License" onChange={this.handleChange}/>
                                             </label>
                                         </div>
                                         <div className="small-12 columns">
-                                            <label>Position
-                                                <input type="number" placeholder="Position"/>
+                                            <label>Origin
+                                                <input id="inputOrigin" type="text" placeholder="Origin" onChange={this.handleChange}/>
                                             </label>
-                                            <button className="button" onClick={this.AddCarRequest}>Add!</button>
+                                            <label>Destination
+                                              <input id="inputDestination" type="text" placeholder="Destination" onChange={this.handleChange}/>
+                                            </label>
+                                            <button className="button" onClick={this.addCarRequest}>Add!</button>
                                         </div>
                                     </div>
                                 </form>
@@ -104,8 +104,9 @@ export class Home extends React.Component {
                                 } else {
                                   //Create a JSON object
                                   const vehicleArray = JSON.parse(result.text);
+                                  this.state.numberOfVehicles = vehicleArray.data.length;
 
-                                  //Array to return
+                                  //Array of carInfo components to return
                                   var returnValue =[];
 
                                   //For each vehicle in the result
@@ -118,7 +119,10 @@ export class Home extends React.Component {
                                                origin={vehicleArray.data[i].attributes.origin}
                                                destination={vehicleArray.data[i].attributes.destination}
                                                startTime={vehicleArray.data[i].attributes.startTime}
-                                               duration={vehicleArray.data[i].attributes.duration}/>);
+                                               duration={vehicleArray.data[i].attributes.duration}
+                                               id={vehicleArray.data[i].id}
+                                                              callback = {this.refresh}
+                                    />);
                                   }
                                   return<span>{returnValue}</span>;
                                 }
@@ -127,7 +131,7 @@ export class Home extends React.Component {
                         </Request>
 
                     </div>
-
+              {console.log("rerender")};
                     <div className="row column">
                         <a className="button hollow expanded">Load More</a>
                     </div>
@@ -136,34 +140,45 @@ export class Home extends React.Component {
     }
 
   //Send the request to the server to add a new car
-  AddCarRequest()
-  {
-    console.log("Add Car :");
-    var data = {"data":{
-      "type": "vehicles",
-      "attributes":
-      {
-        "license": "license",
-        "origin" : "Milan",
-        "destination" : "Paris",
-        "duration" : 10000000,
-        "startTime" : new Date().getTime()
+  addCarRequest() {
+      var data = {
+        "data": {
+          "type": "vehicles",
+          "attributes": {
+            "license": this.state.inputLicense,
+            "origin": this.state.inputOrigin,
+            "destination": this.state.inputDestination,
+            "duration": 10000000,
+            "startTime": new Date().getTime()
+          }
+        }
+      };
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:3000/api/vehicles', true);
+      xhr.setRequestHeader("Content-Type", "application/vnd.api+json");
+      xhr.send(JSON.stringify(data));
+
+      xhr.onreadystatechange = processRequest;
+
+      function processRequest(e) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var response = JSON.parse(xhr.responseText);
+          console.log(response);
+        }
       }
-    }};
-    console.log(this.inputLicense);
+  }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/api/vehicles',true);
-    xhr.setRequestHeader("Content-Type", "application/vnd.api+json");
-    xhr.send(JSON.stringify(data));
-
-    xhr.onreadystatechange = processRequest;
-
-    function processRequest(e) {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        var response = JSON.parse(xhr.responseText);
-        console.log(response);
-      }
-    }
+  //callback function called when a child car info component is deleted
+  refresh (){
+    this.setState({numberOfVehicles: this.state.numberOfVehicles - 1})
   }
 }
+
+const mapStateToProps = state => ({
+  user : state.user
+});
+
+export default connect(
+  mapStateToProps
+)(Home)

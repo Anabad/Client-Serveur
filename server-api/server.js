@@ -4,7 +4,7 @@ const app = require('express')();
 const API = require('json-api');
 const mongoose = require('mongoose');
 const APIError = API.types.Error;
-mongoose.connect('mongodb://localhost/server-api');
+mongoose.connect('mongodb://localhost/server_badrinath_beddok_collot');
 
 const models = {
   Vehicle: require('./models/vehicle').model,
@@ -52,7 +52,7 @@ app.route(`/api/:type(${db.join('|')})`).get(apiReqHandler).post(apiReqHandler)
   .patch(apiReqHandler);
 
 app.route(`/api/:type(${db.join('|')})/:id`).get(apiReqHandler).patch(apiReqHandler)
-  .delete(apiReqHandler);
+    .delete(apiReqHandler);
 
 app.route(`/api/:type(${db.join('|')})/:id/relationships/:relationship`)
   .get(apiReqHandler).post(apiReqHandler).patch(apiReqHandler)
