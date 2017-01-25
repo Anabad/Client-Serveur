@@ -1,24 +1,22 @@
 angular.module('plunker', [])
 
   .factory('plunkGenerator', function ($document) {
+	return function (ngVersion, fdVersion, version, module, content) {
+		var form = angular.element('<form style="display: none;" method="post" action="http://plnkr.co/edit/?p=preview" target="_blank"></form>');
+		var addField = function (name, value) {
+			var input = angular.element('<input type="hidden" name="' + name + '">');
+			input.attr('value', value);
+			form.append(input);
+		};
 
-    return function (ngVersion, fdVersion, version, module, content) {
-
-      var form = angular.element('<form style="display: none;" method="post" action="http://plnkr.co/edit/?p=preview" target="_blank"></form>');
-      var addField = function (name, value) {
-        var input = angular.element('<input type="hidden" name="' + name + '">');
-        input.attr('value', value);
-        form.append(input);
-      };
-
-      var indexContent = function (content, version) {
-        return '<!doctype html>\n' +
+		var indexContent = function (content, version) {
+			return '<!doctype html>\n' +
           '<html ng-app="foundationDemoApp">\n' +
           '  <head>\n' +
-          '    <script src="//ajax.googleapis.com/ajax/libs/angularjs/'+ngVersion+'/angular.js"></script>\n' +
+          '    <script src="//ajax.googleapis.com/ajax/libs/angularjs/' + ngVersion + '/angular.js"></script>\n' +
           '    <script src="//circlingthesun.github.io/angular-foundation-6/angular-foundation.js"></script>\n' +
           '    <script src="example.js"></script>\n' +
-          '    <link href="//cdnjs.cloudflare.com/ajax/libs/foundation/'+fdVersion+'/foundation.css" rel="stylesheet">\n' +
+          '    <link href="//cdnjs.cloudflare.com/ajax/libs/foundation/' + fdVersion + '/foundation.css" rel="stylesheet">\n' +
           '  </head>\n' +
           '  <body>\n\n' +
           '    <div class="row">\n' +
@@ -28,35 +26,34 @@ angular.module('plunker', [])
           '    </div>\n' +
           '  </body>\n' +
           '</html>\n';
-      };
+		};
 
-      var scriptContent = function(content) {
-        return "angular.module('foundationDemoApp', ['mm.foundation']);" + "\n" + content;
-      };
+		var scriptContent = function (content) {
+			return 'angular.module(\'foundationDemoApp\', [\'mm.foundation\']);' + '\n' + content;
+		};
 
-      addField('description', 'http://circlingthesun.github.io.github.io/angular-foundation-6/');
-      addField('files[index.html]', indexContent(content.markup, version));
-      addField('files[example.js]', scriptContent(content.javascript));
+		addField('description', 'http://circlingthesun.github.io.github.io/angular-foundation-6/');
+		addField('files[index.html]', indexContent(content.markup, version));
+		addField('files[example.js]', scriptContent(content.javascript));
 
-      $document.find('body').append(form);
-      form[0].submit();
-      form.remove();
-    };
-  })
+		$document.find('body').append(form);
+		form[0].submit();
+		form.remove();
+	};
+})
 
   .controller('PlunkerCtrl', function ($scope, plunkGenerator) {
+	$scope.content = {};
 
-    $scope.content = {};
-
-    $scope.edit = function (ngVersion, fdVersion, version, module) {
-      plunkGenerator(ngVersion, fdVersion, version, module, $scope.content);
-    };
-  })
+	$scope.edit = function (ngVersion, fdVersion, version, module) {
+		plunkGenerator(ngVersion, fdVersion, version, module, $scope.content);
+	};
+})
 
   .directive('plunkerContent', function () {
-    return {
-      link:function (scope, element, attrs) {
-        scope.content[attrs.plunkerContent] = element.text().trim();
-      }
-    }
-  });
+	return {
+		link: function (scope, element, attrs) {
+			scope.content[attrs.plunkerContent] = element.text().trim();
+		}
+	};
+});

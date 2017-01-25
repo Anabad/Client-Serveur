@@ -1,148 +1,143 @@
-import React from "react";
-import { browserHistory } from "react-router";
+import React from 'react';
+import {browserHistory} from 'react-router';
 
 export class CarInfo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      progression : 0,
-      finished : false,
-      inputDestination : ""
-    };
+	constructor(props) {
+		super(props);
+		this.state = {
+			progression: 0,
+			finished: false,
+			inputDestination: ''
+		};
 
-    this.update = this.update.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.displayProgressBar = this.displayProgressBar.bind(this);
-    this.displayPositionInfo = this.displayPositionInfo.bind(this);
-    this.displayNewTripButton = this.displayNewTripButton.bind(this);
-    this.deleteCar = this.deleteCar.bind(this);
-    this.updateTrip = this.updateTrip.bind(this);
+		this.update = this.update.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.displayProgressBar = this.displayProgressBar.bind(this);
+		this.displayPositionInfo = this.displayPositionInfo.bind(this);
+		this.displayNewTripButton = this.displayNewTripButton.bind(this);
+		this.deleteCar = this.deleteCar.bind(this);
+		this.updateTrip = this.updateTrip.bind(this);
 
-    //Call the function update every 1 sec
-    setInterval(this.update, 1000);
-  }
+    // Call the function update every 1 sec
+		setInterval(this.update, 1000);
+	}
 
-  //Handle the changes of input fields
-  handleChange(event) {
-    this.state[event.target.id] = event.target.value;
-  }
+  // Handle the changes of input fields
+	handleChange(event) {
+		this.state[event.target.id] = event.target.value;
+	}
 
-  //Return the progression of the trip in %
-  getProgression(){
-    var duration = this.props.duration;
-    var timeSpent = new Date().getTime()-this.props.startTime;
-    var progress;
-    //If the car is traveling
-    if(duration>timeSpent) {
-      progress = timeSpent / duration *100;
-      this.state.finished = false;
-    }
-    //Else it's finished
-    else{
-      progress = 100;
-      this.state.finished = true;
-    }
+  // Return the progression of the trip in %
+	getProgression() {
+		var duration = this.props.duration;
+		var timeSpent = new Date().getTime() - this.props.startTime;
+		var progress;
+    // If the car is traveling
+		if (duration > timeSpent) {
+			progress = timeSpent / duration * 100;
+			this.state.finished = false;
+		}
+    // Else it's finished
+		else {
+			progress = 100;
+			this.state.finished = true;
+		}
 
-    this.setState({
-      progression: progress
-  });
-  }
+		this.setState({
+			progression: progress
+		});
+	}
 
-  //Get the progress bar type to color the bar in green when finished or blue when on going
-  displayProgressBar(){
-    if(this.props.duration<(new Date().getTime()-this.props.startTime)){
-      return (
+  // Get the progress bar type to color the bar in green when finished or blue when on going
+	displayProgressBar() {
+		if (this.props.duration < (new Date().getTime() - this.props.startTime)) {
+			return (
         <div className="success progress" role="progressbar" tabIndex="0" aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
-          <div className="progress-meter" style={{width: this.state.progression.toString()+'%'}}></div>
+          <div className="progress-meter" style={{width: this.state.progression.toString() + '%'}}></div>
         </div>
-          );
-    }else{
-          return (
+			);
+		}
+		return (
             <div className="progress" role="progressbar" tabIndex="0" aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
-              <div className="progress-meter" style={{width: this.state.progression.toString()+'%'}}></div>
+              <div className="progress-meter" style={{width: this.state.progression.toString() + '%'}}></div>
             </div>
-          );
-        }
-  }
+		);
+	}
 
-  //Return the correct elements to display, depending of whether or not the trip is finished
-  displayPositionInfo(){
-    //If it's not finished, display the origin, destination and progression
-    if(!this.state.finished){
-        return <span>
+  // Return the correct elements to display, depending of whether or not the trip is finished
+	displayPositionInfo() {
+    // If it's not finished, display the origin, destination and progression
+		if (!this.state.finished) {
+			return <span>
                   <p className="lead"><b>Origin :</b> {this.props.origin}</p>
                   <p className="lead"><b>Destination :</b> {this.props.destination}</p>
                   <p className="lead"><b>Progression :</b> {Math.round(this.state.progression).toString()}%</p>
-                </span>
-    }
-    //If it's finished, only display the current position
-    else{
-        return <p className="lead"><b>Location : </b>{this.props.destination}</p>
-    }
-  }
+                </span>;
+		}
+    // If it's finished, only display the current position
 
-  //Return the button to set a new trip if finished only
-  displayNewTripButton(){
-    //If finished, display the button to set a new trip
-    if(this.state.finished){
-      return <p>
+		return <p className="lead"><b>Location : </b>{this.props.destination}</p>;
+	}
+
+  // Return the button to set a new trip if finished only
+	displayNewTripButton() {
+    // If finished, display the button to set a new trip
+		if (this.state.finished) {
+			return <p>
                 <p>New destination : </p>
-                <input id="inputDestination" type="text" placeholder="Destination" style={{width: '80%', float: "left"}} onChange={this.handleChange}/>
+                <input id="inputDestination" type="text" placeholder="Destination" style={{width: '80%', float: 'left'}} onChange={this.handleChange}/>
                 <button className="button" onClick={this.updateTrip}>Go</button>
-             </p>
-    }
-    //else, display nothing
-    else{
-      return null
-    }
-  }
+             </p>;
+		}
+    // else, display nothing
 
-  deleteCar(){
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', 'http://localhost:3000/api/vehicles/'+this.props.id.toString(),true);
-    xhr.setRequestHeader("Content-Type", "application/vnd.api+json");
-    xhr.send();
-    console.log("delete");
-    this.props.callback;
+		return null;
+	}
 
-  }
+	deleteCar() {
+		var xhr = new XMLHttpRequest();
+		xhr.open('DELETE', 'http://localhost:3000/api/vehicles/' + this.props.id.toString(), true);
+		xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
+		xhr.send();
+		console.log('delete');
+		this.props.callback;
+	}
 
-  updateTrip(){
-    //Create the data JSON to send
-    var data = {"data":{
-      "type": "vehicles",
-      "attributes":
-      {
-        "origin" :  this.props.destination,
-        "destination" : this.state.inputDestination,
-        "duration" : 10000000,
-        "startTime" : new Date().getTime()
-      }
-    }};
+	updateTrip() {
+    // Create the data JSON to send
+		var data = {data: {
+			type: 'vehicles',
+			attributes:
+			{
+				origin: this.props.destination,
+				destination: this.state.inputDestination,
+				duration: 10000000,
+				startTime: new Date().getTime()
+			}
+		}};
 
+		var xhr = new XMLHttpRequest();
+		xhr.open('PATCH', 'http://localhost:3000/api/vehicles/' + this.props.id.toString(), true);
+		xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
+		xhr.send(JSON.stringify(data));
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('PATCH', 'http://localhost:3000/api/vehicles/'+this.props.id.toString(),true);
-    xhr.setRequestHeader("Content-Type", "application/vnd.api+json");
-    xhr.send(JSON.stringify(data));
+		xhr.onreadystatechange = processRequest;
 
-    xhr.onreadystatechange = processRequest;
+		function processRequest(e) {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var response = JSON.parse(xhr.responseText);
+				console.log(response);
 
-    function processRequest(e) {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        var response = JSON.parse(xhr.responseText);
-        console.log(response);
+        // Set the origin as the current location (aka destination)
+				this.props.origin = this.props.destination;
+        // Set the destination
+				this.props.destination = this.state.inputDestination;
+			}
+		}
+	}
 
-        //Set the origin as the current location (aka destination)
-        this.props.origin = this.props.destination;
-        //Set the destination
-        this.props.destination = this.state.inputDestination;
-      }
-    }
-  }
-
-  render() {
-    return (
+	render() {
+		return (
       <div className="column">
         <div className="callout">
           <p className="lead"><b>Car {this.props.number}</b></p>
@@ -161,11 +156,11 @@ export class CarInfo extends React.Component {
           {this.displayProgressBar()}
         </div>
       </div>
-    );
-  }
+		);
+	}
 
-  //refresh the component by refreshing the state of the progression variable
-  update() {
-    this.getProgression();
-  }
+  // refresh the component by refreshing the state of the progression variable
+	update() {
+		this.getProgression();
+	}
 }
