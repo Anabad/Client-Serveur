@@ -9,7 +9,9 @@
     "json-api": "^2.15.7",
     "mongoose": "^4.4.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "xo": "^0.17.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -23,5 +25,22 @@
   "bugs": {
     "url": "https://github.com/Waxo/server-api/issues"
   },
-  "homepage": "https://github.com/Waxo/server-api#readme"
+  "homepage": "https://github.com/Waxo/server-api#readme",
+  " xo ": {
+    " esnext ": true ,
+    " envs ": [
+      " node "
+    ],
+    " space ": 2 ,
+    " rules ": {
+      " max - len ": [
+        " error " ,
+        80 ,
+        2
+      ]
+    },
+    " ignores " : [
+      " Gruntflie . js "
+    ]
+  }
 }
