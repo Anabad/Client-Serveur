@@ -21,4 +21,4 @@ cd ../Client
 npm start
 ```
 
-Aller à l'url http://localhost:8080
+[Tester l'application] (http://localhost:8080)
