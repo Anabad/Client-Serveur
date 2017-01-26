@@ -9,21 +9,21 @@ import {browserHistory} from 'react-router';
 
 class Vehicles extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			vehicles: []
-		};
-		this.handleChange = this.handleChange.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      vehicles: []
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
 
-	handleChange(event) {
-		this.state[event.target.id] = event.target.value;
-		console.log(this.state);
-	}
+  handleChange(event) {
+    this.state[event.target.id] = event.target.value;
+    console.log(this.state);
+  }
 
-	render() {
-		return (
+  render() {
+    return (
         <div>
           <Request
               url= { `http://localhost:3000/api/users/${this.props.user.userId}/relationships/vehicles` }
@@ -33,13 +33,13 @@ class Vehicles extends React.Component {
           >
             {
               ({error, result, loading}) => {
-	if (loading) {
-		return <div>loading...</div>;
-	}
-	return <div>{JSON.stringify(result)}</div>;
+                if (loading) {
+                  return <div>loading...</div>;
+                }
+                return <div>{JSON.stringify(result)}</div>;
 
-	return null;
-}
+                return null;
+              }
               }
           </Request>
           <div className="row">
@@ -102,21 +102,21 @@ class Vehicles extends React.Component {
             </Table> */}
           </div>
         </div>
-		);
-	}
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-	user: state.user
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
-	onUserLoggedIn: user => {
-		dispatch({
-			type: 'LOGIN',
-			user
-		});
-	}
+  onUserLoggedIn: user => {
+    dispatch({
+      type: 'LOGIN',
+      user
+    });
+  }
 });
 
 export default connect(

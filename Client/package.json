@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npm run build",
     "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot",
-    "build:prod": "webpack -p && cp src/index.html dist/index.html"
+    "build:prod": "webpack -p && cp src/index.html dist/index.html",
+    "test": "xo"
   },
   "keywords": [
     "reactjs"
@@ -33,21 +34,24 @@
     "webpack-dev-server": "^1.14.1",
     "xo": "^0.17.1"
   },
-  " xo ": {
-    " esnext ": true ,
-    " envs ": [
-      " node "
+  "xo": {
+    "esnext": true,
+    "envs":[
+      "node"
     ],
-    " space ": 2 ,
-    " rules ": {
-      " max - len ": [
-        " error " ,
-        80 ,
+    "space": 2,
+    "rules": {
+      "max-len": [
+        "error",
+        80,
         2
       ]
     },
-    " ignores " : [
-      " Gruntflie . js "
+    "ignores" : [
+      "Gruntfile.js",
+      "webpack.config.js",
+      "src/js/**",
+      "src/assets/**"
     ]
   }
 }

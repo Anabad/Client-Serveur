@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 
 export const Header = props => {
-	return (
+  return (
         <nav>
             <div>
                 <div>
@@ -13,5 +13,5 @@ export const Header = props => {
                 </div>
             </div>
         </nav>
-	);
+  );
 };

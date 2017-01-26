@@ -6,32 +6,32 @@ import {connect} from 'react-redux';
 import {CarInfo} from './CarInfo';
 
 class Home extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			inputLicense: '',
-			inputOrigin: '',
-			inputDestination: '',
-			user: '',
-			update: 0,
-			numberOfVehicles: 0
-		};
-		this.handleChange = this.handleChange.bind(this);
-		this.addCarRequest = this.addCarRequest.bind(this);
-		this.refresh = this.refresh.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputLicense: '',
+      inputOrigin: '',
+      inputDestination: '',
+      user: '',
+      update: 0,
+      numberOfVehicles: 0
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.addCarRequest = this.addCarRequest.bind(this);
+    this.refresh = this.refresh.bind(this);
+  }
 
   // Handle the changes of input fields
-	handleChange(event) {
-		this.state[event.target.id] = event.target.value;
-	}
+  handleChange(event) {
+    this.state[event.target.id] = event.target.value;
+  }
 
-	onLogout() {
-		browserHistory.push('/login');
-	}
+  onLogout() {
+    browserHistory.push('/login');
+  }
 
-	render() {
-		return (
+  render() {
+    return (
             <div>
                 <div className="top-bar" id="realEstateMenu">
                     <div className="top-bar-right">
@@ -99,20 +99,20 @@ class Home extends React.Component {
                         >
                             {
                               ({error, result, loading}) => {
-	if (loading) {
-		return <div>loading...</div>;
-	}
+                                if (loading) {
+                                  return <div>loading...</div>;
+                                }
                                   // Create a JSON object
-	const vehicleArray = JSON.parse(result.text);
-	this.state.numberOfVehicles = vehicleArray.data.length;
+                                const vehicleArray = JSON.parse(result.text);
+                                this.state.numberOfVehicles = vehicleArray.data.length;
 
                                   // Array of carInfo components to return
-	var returnValue = [];
+                                const returnValue = [];
 
                                   // For each vehicle in the result
-	for (var i = 0; i < vehicleArray.data.length; i++) {
+                                for (var i = 0; i < vehicleArray.data.length; i++) {
                                     // Create a new car info component, key is needed for React to render an array
-		returnValue.push(<CarInfo key={i.toString()}
+                                  returnValue.push(<CarInfo key={i.toString()}
                                                number={i}
                                                license={vehicleArray.data[i].attributes.license}
                                                origin={vehicleArray.data[i].attributes.origin}
@@ -122,9 +122,9 @@ class Home extends React.Component {
                                                id={vehicleArray.data[i].id}
                                                               callback = {this.refresh}
                                     />);
-	}
-	return <span>{returnValue}</span>;
-}
+                                }
+                                return <span>{returnValue}</span>;
+                              }
                             }
                         </Request>
 
@@ -134,47 +134,47 @@ class Home extends React.Component {
                         <a className="button hollow expanded">Load More</a>
                     </div>
             </div>
-		);
-	}
+    );
+  }
 
   // Send the request to the server to add a new car
-	addCarRequest() {
-		var data = {
-			data: {
-				type: 'vehicles',
-				attributes: {
-					license: this.state.inputLicense,
-					origin: this.state.inputOrigin,
-					destination: this.state.inputDestination,
-					duration: 10000000,
-					startTime: new Date().getTime()
-				}
-			}
-		};
+  addCarRequest() {
+    const data = {
+      data: {
+        type: 'vehicles',
+        attributes: {
+          license: this.state.inputLicense,
+          origin: this.state.inputOrigin,
+          destination: this.state.inputDestination,
+          duration: 10000000,
+          startTime: new Date().getTime()
+        }
+      }
+    };
 
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', 'http://localhost:3000/api/vehicles', true);
-		xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
-		xhr.send(JSON.stringify(data));
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:3000/api/vehicles', true);
+    xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
+    xhr.send(JSON.stringify(data));
 
-		xhr.onreadystatechange = processRequest;
+    xhr.onreadystatechange = processRequest;
 
-		function processRequest(e) {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				var response = JSON.parse(xhr.responseText);
-				console.log(response);
-			}
-		}
-	}
+    function processRequest(e) {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        const response = JSON.parse(xhr.responseText);
+        console.log(response);
+      }
+    }
+  }
 
   // callback function called when a child car info component is deleted
-	refresh() {
-		this.setState({numberOfVehicles: this.state.numberOfVehicles - 1});
-	}
+  refresh() {
+    this.setState({numberOfVehicles: this.state.numberOfVehicles - 1});
+  }
 }
 
 const mapStateToProps = state => ({
-	user: state.user
+  user: state.user
 });
 
 export default connect(

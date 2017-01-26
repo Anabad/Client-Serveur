@@ -14,8 +14,8 @@ import {createStore} from 'redux';
 const store = createStore(Reducer);
 
 class App extends React.Component {
-	render() {
-		return (
+  render() {
+    return (
             <Provider store={store}>
             <Router history={browserHistory}>
                 <Route path={'/'} component={Root} >
@@ -28,8 +28,8 @@ class App extends React.Component {
                 <Route path={'home-single'} component={Home}/>
             </Router>
             </Provider>
-		);
-	}
+    );
+  }
 }
 
 render(<App />, window.document.getElementById('app'));

@@ -3,8 +3,8 @@ import React from 'react';
 import {Header} from './Header';
 
 export class Root extends React.Component {
-	render() {
-		return (
+  render() {
+    return (
             <div>
                 <div>
                     <div>
@@ -18,6 +18,6 @@ export class Root extends React.Component {
                     </div>
                 </div>
             </div>
-		);
-	}
+    );
+  }
 }
