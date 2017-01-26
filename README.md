@@ -1,9 +1,10 @@
-# Client-Serveur
+﻿# Client-Serveur
 
 ## Introduction
 
-Ce projet est un client-serveur de gestion d'une flotte de vehicules autonomes.
-Le server a été créé en EmberJS et utilise la specicfication JSON-API.
+This app is a simple app of car management.
+The server is made with EmberJS and use JSON API
+The Client uses React, Redux and Foundation
 
 ## Installation
 ```
@@ -12,7 +13,7 @@ npm install
 cd ../Client
 npm install
 ```
-## Lancement du projet
+## Start
 
 ```
 cd ../Serveur
@@ -21,4 +22,8 @@ cd ../Client
 npm start
 ```
 
-[Tester l'application] (http://localhost:8080)
+[Test the app] (http://localhost:8080)
+
+## Additional infos
+
+We tried to get the client to refresh when deleting or updating a car, we got some issues with accessing the state in callback functions, because of binding of issues. So after hitting a delete or update, you have to reload the page.

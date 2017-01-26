@@ -48,11 +48,11 @@ class Home extends React.Component {
 
                         <div className="medium-7 large-6 columns">
                             <h1>Manage your awesome fleet</h1>
-                            <p className="subheader">Create VroomVrooms, delete VroomVrooms and send them wherever you want.</p>
+                            <p className="subheader">Welcome to our app! You can add cars on the right. There are no limitations to the number of car you can add. You can check your car progression without reloading the page, it should update itself.</p>
                         </div>
 
                         <div className="show-for-large large-3 columns">
-                            <img src="http://placehold.it/400x370&text=PSR1257 + 12 C" alt="picture of space"/>
+                          <img src="/assets/img/CarBanner.png" alt="picture"/>
                         </div>
 
                         <div className="medium-5 large-3 columns">
@@ -88,8 +88,6 @@ class Home extends React.Component {
                     <div className="row column">
                         <p className="lead">Cars :</p>
                     </div>
-
-                    <div className="row small-up-1 medium-up-2 large-up-3">
                       <Request
                           url={'http://localhost:3000/api/vehicles'}
                           method="get"
@@ -119,19 +117,13 @@ class Home extends React.Component {
                                                startTime={vehicleArray.data[i].attributes.startTime}
                                                duration={vehicleArray.data[i].attributes.duration}
                                                id={vehicleArray.data[i].id}
-                                                            callback = {this.refresh}
+                                               callback = {this.refresh}
                                     />);
                                 }
-                                return <span>{returnValue}</span>;
+                                return <div className="row small-up-1 medium-up-1 large-up-2">{returnValue}</div>;
                               }
                             }
                         </Request>
-
-                    </div>
-              {console.log('rerender')};
-                    <div className="row column">
-                        <a className="button hollow expanded">Load More</a>
-                    </div>
             </div>
     );
   }

@@ -2,3 +2,6 @@
 /dist
 /.idea
 /npm-debug.log
+
+#Remove the vroom vroom file
+*.pdf

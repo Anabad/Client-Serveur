@@ -104,6 +104,7 @@ export default class CarInfo extends React.Component {
   updateTrip() {
     // Create the data JSON to send
     const data = {data: {
+      id: this.props.id.toString(),
       type: 'vehicles',
       attributes:
       {
@@ -142,7 +143,7 @@ export default class CarInfo extends React.Component {
           <p className="lead"><b>Car {this.props.number}</b></p>
           <div className="row">
             <p className="small-6 columns">
-              <img src="http://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"/>
+              <img src={"/assets/img/CarIcon"+(Math.floor(Math.random() * 10)).toString()+".png"} alt="Car icon"/>
             </p>
             <div className="small-6 columns">
               <p className="lead"><b>License :</b> {this.props.license}</p>
