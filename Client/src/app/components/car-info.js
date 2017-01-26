@@ -6,7 +6,8 @@ export default class CarInfo extends React.Component {
     this.state = {
       progression: 0,
       finished: false,
-      inputDestination: ''
+      inputDestination: '',
+      iconValue: Math.floor(Math.random() * 10)
     };
 
     this.update = this.update.bind(this);
@@ -110,7 +111,7 @@ export default class CarInfo extends React.Component {
       {
         origin: this.props.destination,
         destination: this.state.inputDestination,
-        duration: 10000000,
+        duration: 100000,
         startTime: new Date().getTime()
       }
     }};
@@ -143,7 +144,7 @@ export default class CarInfo extends React.Component {
           <p className="lead"><b>Car {this.props.number}</b></p>
           <div className="row">
             <p className="small-6 columns">
-              <img src={"/assets/img/CarIcon"+(Math.floor(Math.random() * 10)).toString()+".png"} alt="Car icon"/>
+              <img src={"/assets/img/CarIcon"+this.state.iconValue.toString()+".png"} alt="Car icon"/>
             </p>
             <div className="small-6 columns">
               <p className="lead"><b>License :</b> {this.props.license}</p>

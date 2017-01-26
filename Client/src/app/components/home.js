@@ -137,7 +137,7 @@ class Home extends React.Component {
           license: this.state.inputLicense,
           origin: this.state.inputOrigin,
           destination: this.state.inputDestination,
-          duration: 10000000,
+          duration: 100000,
           startTime: new Date().getTime()
         }
       }
