@@ -1,24 +1,24 @@
 # Client-Serveur
 
-TP-Client-Serveur
+## Introduction
 
-Introduction
+Ce projet est un client-serveur de gestion d'une flotte de vehicules autonomes.
+Le server a été créé en EmberJS et utilise la specicfication JSON-API.
 
-Ce projet est un client-serveur de gestion de voitures en NodeJS, ReactJS et utilisant une base de donnée MongoDB nommée Localhost.
-
-Installation
-
-Pour installer le projet:
-
+## Installation
+```
+cd Serveur
 npm install
-Lancement du projet
+cd ../Client
+npm install
+```
+## Lancement du projet
 
-npm run watch
-Aller à l'url http://localhost:3000
-Pages disponibles:
+```
+cd ../Serveur
+npm start
+cd ../Client
+npm start
+```
 
-http://localhost:3000
-http://localhost:3000/profile
-Problèmes rencontrés:
-
-Aucune réponse des rêquetes serveurs des components ReactJS
+[Tester l'application] (http://localhost:8080)
