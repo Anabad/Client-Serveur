@@ -1,7 +1,6 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
 
-export class CarInfo extends React.Component {
+export default class CarInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,9 +35,7 @@ export class CarInfo extends React.Component {
     if (duration > timeSpent) {
       progress = timeSpent / duration * 100;
       this.state.finished = false;
-    }
-    // Else it's finished
-    else {
+    } else {
       progress = 100;
       this.state.finished = true;
     }
@@ -95,11 +92,12 @@ export class CarInfo extends React.Component {
   }
 
   deleteCar() {
+    // eslint-disable-next-line no-undef
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', 'http://localhost:3000/api/vehicles/' + this.props.id.toString(), true);
     xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
     xhr.send();
-    console.log('delete');
+    // eslint-disable-next-line no-unused-expressions
     this.props.callback;
   }
 
@@ -116,6 +114,7 @@ export class CarInfo extends React.Component {
       }
     }};
 
+    // eslint-disable-next-line no-undef
     const xhr = new XMLHttpRequest();
     xhr.open('PATCH', 'http://localhost:3000/api/vehicles/' + this.props.id.toString(), true);
     xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
@@ -123,8 +122,8 @@ export class CarInfo extends React.Component {
 
     xhr.onreadystatechange = processRequest;
 
-    function processRequest(e) {
-      if (xhr.readyState == 4 && xhr.status == 200) {
+    function processRequest() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         const response = JSON.parse(xhr.responseText);
         console.log(response);
 

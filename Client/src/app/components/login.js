@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+// eslint-disable-next-line no-unused-vars
 import Request from 'react-http-request';
 
 class Login extends React.Component {
@@ -18,12 +19,58 @@ class Login extends React.Component {
 
   onLogin() {
     this.setState({loginClicked: true});
-    console.log(this.state.username);
   }
 
   // Handle the changes of input fields
   handleChange(event) {
     this.state[event.target.id] = event.target.value;
+  }
+
+  // Checks if there are users if not adds them
+  componentWillMount() {
+      // eslint-disable-next-line no-undef
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3000/api/users', true);
+    xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
+    xhr.send();
+    xhr.onreadystatechange = processRequest;
+
+    function processRequest() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        if (response.data.length < 1) {
+          const maxime = {
+            data: {
+              type: 'users',
+              attributes: {
+                name: 'Maxime',
+                password: 'ember'
+              }
+            }
+          };
+          const pierreAymeric = {
+            data: {
+              type: 'users',
+              attributes: {
+                name: 'Pierre-Aymeric',
+                password: 'react'
+              }
+            }
+          };
+
+            // eslint-disable-next-line no-undef
+          const xhr = new XMLHttpRequest();
+            // eslint-disable-next-line no-undef
+          const xhr2 = new XMLHttpRequest();
+          xhr.open('POST', 'http://localhost:3000/api/users', true);
+          xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
+          xhr.send(JSON.stringify(maxime));
+          xhr2.open('POST', 'http://localhost:3000/api/users', true);
+          xhr2.setRequestHeader('Content-Type', 'application/vnd.api+json');
+          xhr2.send(JSON.stringify(pierreAymeric));
+        }
+      }
+    }
   }
 
   render() {
@@ -38,12 +85,12 @@ class Login extends React.Component {
           send={{username: this.state.username, password: this.state.password}}
           >
           {
-            ({error, result, loading}) => {
+            ({result, loading}) => {
               if (loading) {
                 return <div>loading...</div>;
               }
               this.state.loginClicked = false;
-              if (result.text != 'false') {
+              if (result.text !== 'false') {
                 this.props.onUserLoggedIn({username: this.state.username, userId: result.text});
                 return null;
               }
@@ -51,7 +98,7 @@ class Login extends React.Component {
             }
           }
           </Request> :
-            <p>Hello</p>
+            <div></div>
           }
         <div className="row">
           <div className="medium-6 medium-centered large-4 large-centered columns">
@@ -63,11 +110,9 @@ class Login extends React.Component {
                   <input id="username" type="text" placeholder="somebody@example.com" onChange={this.handleChange}/>
                 </label>
                 <label>Password
-                  <input id="password" type="text" placeholder="Password" onChange={this.handleChange}/>
+                  <input id="password" type="password" placeholder="Password" onChange={this.handleChange}/>
                 </label>
-                <input id="show-password" type="checkbox"/><label htmlFor="show-password">Show password</label>
                   <p><button className="button expanded" onClick={this.onLogin}>Log In</button></p>
-                  <p className="text-center"><a href="#">Forgot your password?</a></p>
               </div>
             {/* </form> */}
           </div>

@@ -1,9 +1,11 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import {browserHistory, Link} from 'react-router';
+// eslint-disable-next-line no-unused-vars
 import Request from 'react-http-request';
 import {connect} from 'react-redux';
-
-import {CarInfo} from './CarInfo';
+// eslint-disable-next-line no-unused-vars
+import CarInfo from './car-info';
 
 class Home extends React.Component {
   constructor(props) {
@@ -37,7 +39,6 @@ class Home extends React.Component {
                     <div className="top-bar-right">
                         <ul className="menu">
                             <li><Link to={'/user'}>My Account</Link></li>
-                            <li><Link to={'/vehicles'}>My Vehicles</Link></li>
                             <li><a className="button" onClick={this.onLogout}>Log Out</a></li>
                         </ul>
                     </div>
@@ -98,7 +99,7 @@ class Home extends React.Component {
                           verbose={true}
                         >
                             {
-                              ({error, result, loading}) => {
+                              ({result, loading}) => {
                                 if (loading) {
                                   return <div>loading...</div>;
                                 }
@@ -110,7 +111,7 @@ class Home extends React.Component {
                                 const returnValue = [];
 
                                   // For each vehicle in the result
-                                for (var i = 0; i < vehicleArray.data.length; i++) {
+                                for (let i = 0; i < vehicleArray.data.length; i++) {
                                     // Create a new car info component, key is needed for React to render an array
                                   returnValue.push(<CarInfo key={i.toString()}
                                                number={i}
@@ -120,7 +121,7 @@ class Home extends React.Component {
                                                startTime={vehicleArray.data[i].attributes.startTime}
                                                duration={vehicleArray.data[i].attributes.duration}
                                                id={vehicleArray.data[i].id}
-                                                              callback = {this.refresh}
+                                                            callback = {this.refresh}
                                     />);
                                 }
                                 return <span>{returnValue}</span>;
@@ -151,7 +152,7 @@ class Home extends React.Component {
         }
       }
     };
-
+    // eslint-disable-next-line no-undef
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:3000/api/vehicles', true);
     xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
@@ -159,8 +160,8 @@ class Home extends React.Component {
 
     xhr.onreadystatechange = processRequest;
 
-    function processRequest(e) {
-      if (xhr.readyState == 4 && xhr.status == 200) {
+    function processRequest() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         const response = JSON.parse(xhr.responseText);
         console.log(response);
       }

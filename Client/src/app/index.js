@@ -1,15 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/default */
 import React from 'react';
-import {render} from 'react-dom';
+import render from 'react-dom';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
-
-import {Root} from './components/Root';
-import Home from './components/Home';
-import {User} from './components/User';
-import Login from './components/Login';
-import Vehicles from './components/Vehicles';
+import Provider from 'react-redux';
+import createStore from 'redux';
+import Root from './components/root';
+import Home from './components/home';
+import User from './components/user';
+import Login from './components/login';
 import Reducer from './components/Reducers/reducer';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+/* eslint-enable */
 
 const store = createStore(Reducer);
 
@@ -23,7 +24,6 @@ class App extends React.Component {
                     <Route path={'user'} component={User} />
                     <Route path={'home'} component={Home} />
                     <Route path={'login'} component={Login} />
-                    <Route path={'vehicles'} component={Vehicles}/>
                 </Route>
                 <Route path={'home-single'} component={Home}/>
             </Router>
@@ -31,5 +31,5 @@ class App extends React.Component {
     );
   }
 }
-
+// eslint-disable-next-line no-undef
 render(<App />, window.document.getElementById('app'));

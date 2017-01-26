@@ -36,18 +36,11 @@
   },
   "xo": {
     "esnext": true,
-    "envs":[
+    "envs": [
       "node"
     ],
     "space": 2,
-    "rules": {
-      "max-len": [
-        "error",
-        80,
-        2
-      ]
-    },
-    "ignores" : [
+    "ignores": [
       "Gruntfile.js",
       "webpack.config.js",
       "src/js/**",
