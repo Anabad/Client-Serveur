@@ -47,10 +47,8 @@ class Home extends React.Component {
                     <div className="row">
 
                         <div className="medium-7 large-6 columns">
-                            <h1>Close Your Eyes and Open Your Mind</h1>
-                            <p className="subheader">There is beauty in space, and it is orderly. There is no weather, and there is regularity. It is predictable. Everything in space obeys the laws of physics. If you know these laws, and obey them, space will treat you kindly.</p>
-                            <button className="button">Take a Tour</button>
-                            <button className="button">Start a free trial</button>
+                            <h1>Manage your awesome fleet</h1>
+                            <p className="subheader">Create VroomVrooms, delete VroomVrooms and send them wherever you want.</p>
                         </div>
 
                         <div className="show-for-large large-3 columns">
