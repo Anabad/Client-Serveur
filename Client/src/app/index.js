@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/default */
 import React from 'react';
-import render from 'react-dom';
+import {render} from 'react-dom';
 import {Router, Route, browserHistory, IndexRoute} from 'react-router';
-import Provider from 'react-redux';
-import createStore from 'redux';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
 import Root from './components/root';
 import Home from './components/home';
 import User from './components/user';
