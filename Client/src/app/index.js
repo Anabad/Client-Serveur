@@ -25,7 +25,6 @@ class App extends React.Component {
                     <Route path={'home'} component={Home} />
                     <Route path={'login'} component={Login} />
                 </Route>
-                <Route path={'home-single'} component={Home}/>
             </Router>
             </Provider>
     );

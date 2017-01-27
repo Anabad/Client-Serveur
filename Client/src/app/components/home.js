@@ -1,6 +1,6 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
-import {browserHistory, Link, router} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 // eslint-disable-next-line no-unused-vars
 import Request from 'react-http-request';
 import {connect} from 'react-redux';
@@ -17,11 +17,19 @@ class Home extends React.Component {
       user: '',
       update: 0,
       numberOfVehicles: 0,
-        vehicleArray: []
+      vehicleArray: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.addCarRequest = this.addCarRequest.bind(this);
     this.refresh = this.refresh.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+  }
+
+  componentWillMount() {
+        /* console.log(this.props.isLoggedIn);
+        if (!this.props.isLoggedIn) {
+            browserHistory.push('/login');
+        } */
   }
 
   // Handle the changes of input fields
@@ -30,12 +38,13 @@ class Home extends React.Component {
   }
 
   onLogout() {
-    browserHistory.push('/login');
+    this.props.onUserLoggedOut(this.props.user);
   }
 
   render() {
     return (
             <div>
+                {this.props.isLoggedIn}
                 <div className="top-bar" id="realEstateMenu">
                     <div className="top-bar-right">
                         <ul className="menu">
@@ -123,22 +132,20 @@ class Home extends React.Component {
                                                             callback = {this.refresh}
                                     />);
                                 }
-                                  return <div className="row small-up-1 medium-up-1 large-up-2">{returnValue}</div>;
+                                return <div className="row small-up-1 medium-up-1 large-up-2">{returnValue}</div>;
                               }
                             }
                         </Request>
 
-                    </div>
-                    <div className="row column">
-                        <a className="button hollow expanded">Load More</a>
                     </div>
             </div>
     );
   }
 
   // Send the request to the server to add a new car
-  addCarRequest() {
-      const that =this;
+  addCarRequest(e) {
+    e.preventDefault();
+    const that = this;
     const data = {
       data: {
         type: 'vehicles',
@@ -161,22 +168,18 @@ class Home extends React.Component {
     function processRequest() {
       if (xhr.readyState === 4 && xhr.status === 201) {
         const response = JSON.parse(String(xhr.response));
-        console.log("Id :" + response.data.id);
+        console.log('Id :' + response.data.id);
         const vehicleData = {
-            data: [{
-                type: 'vehicles',
-                id : response.data.id
-            }]
+          data: [{
+            type: 'vehicles',
+            id: response.data.id
+          }]
         };
+          // eslint-disable-next-line no-undef
         const addRelationship = new XMLHttpRequest();
-          addRelationship.open('POST', `http://localhost:3000/api/users/${that.props.user.userId}/relationships/vehicles`, true);
-          addRelationship.setRequestHeader('Content-Type', 'application/vnd.api+json');
-          addRelationship.send(JSON.stringify(vehicleData));
-
-          addRelationship.onreadystatechange = process;
-          function process() {
-              console.log("Status" + addRelationship.status);
-          }
+        addRelationship.open('POST', `http://localhost:3000/api/users/${that.props.user.userId}/relationships/vehicles`, true);
+        addRelationship.setRequestHeader('Content-Type', 'application/vnd.api+json');
+        addRelationship.send(JSON.stringify(vehicleData));
       }
     }
   }
@@ -188,9 +191,20 @@ class Home extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  isLoggedIn: state.isLoggedIn
+});
+
+const mapDispatchToProps = dispatch => ({
+  onUserLoggedOut: user => {
+    dispatch({
+      type: 'LOGOUT',
+      user
+    });
+  }
 });
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+    mapDispatchToProps
 )(Home);

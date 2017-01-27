@@ -5,11 +5,16 @@ const initState = {
   isLoggedIn: false
 };
 
-export default function login(state = initState, action) {
+export default function auth(state = initState, action) {
   if (action.type === 'LOGIN') {
     state.isLoggedIn = true;
     state.user = action.user;
     browserHistory.push(`/home`);
+    return state;
+  } else if (action.type === 'LOGOUT') {
+    state.isLoggedIn = false;
+    state.user = '';
+    browserHistory.push(`/login`);
     return state;
   }
 

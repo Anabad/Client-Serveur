@@ -17,14 +17,16 @@ export default class CarInfo extends React.Component {
     this.displayNewTripButton = this.displayNewTripButton.bind(this);
     this.deleteCar = this.deleteCar.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
-
-    // Call the function update every 1 sec
-    setInterval(this.update, 1000);
   }
 
   // Handle the changes of input fields
   handleChange(event) {
     this.state[event.target.id] = event.target.value;
+  }
+
+  componentDidMount() {
+      // Call the function update every 1 sec
+    setInterval(this.update, 1000);
   }
 
   // Return the progression of the trip in %
@@ -81,11 +83,11 @@ export default class CarInfo extends React.Component {
   displayNewTripButton() {
     // If finished, display the button to set a new trip
     if (this.state.finished) {
-      return <p>
+      return <div>
                 <p>New destination : </p>
                 <input id="inputDestination" type="text" placeholder="Destination" style={{width: '80%', float: 'left'}} onChange={this.handleChange}/>
                 <button className="button" onClick={this.updateTrip}>Go</button>
-             </p>;
+             </div>;
     }
     // else, display nothing
 
@@ -144,7 +146,7 @@ export default class CarInfo extends React.Component {
           <p className="lead"><b>Car {this.props.number}</b></p>
           <div className="row">
             <p className="small-6 columns">
-              <img src={"/assets/img/CarIcon"+this.state.iconValue.toString()+".png"} alt="Car icon"/>
+              <img src={'/assets/img/CarIcon' + this.state.iconValue.toString() + '.png'} alt="Car icon"/>
             </p>
             <div className="small-6 columns">
               <p className="lead"><b>License :</b> {this.props.license}</p>
