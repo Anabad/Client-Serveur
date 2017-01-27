@@ -98,7 +98,7 @@ export default class CarInfo extends React.Component {
     xhr.setRequestHeader('Content-Type', 'application/vnd.api+json');
     xhr.send();
     // eslint-disable-next-line no-unused-expressions
-    this.props.callback;
+    this.props.callback();
   }
 
   updateTrip() {

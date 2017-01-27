@@ -1,6 +1,6 @@
 import React from 'react';
 // eslint-disable-next-line no-unused-vars
-import {browserHistory, Link} from 'react-router';
+import {browserHistory, Link, router} from 'react-router';
 // eslint-disable-next-line no-unused-vars
 import Request from 'react-http-request';
 import {connect} from 'react-redux';
@@ -16,7 +16,8 @@ class Home extends React.Component {
       inputDestination: '',
       user: '',
       update: 0,
-      numberOfVehicles: 0
+      numberOfVehicles: 0,
+        vehicleArray: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.addCarRequest = this.addCarRequest.bind(this);
@@ -88,10 +89,9 @@ class Home extends React.Component {
                     <div className="row column">
                         <p className="lead">Cars :</p>
                     </div>
-
-                    <div className="row small-up-1 medium-up-2 large-up-3">
+                <div>
                       <Request
-                          url={'http://localhost:3000/api/vehicles'}
+                          url={'http://localhost:3000/api/users/' + this.props.user.userId + '?include=vehicles'}
                           method="get"
                           accept="application/vnd.api+json"
                           verbose={true}
@@ -102,33 +102,32 @@ class Home extends React.Component {
                                   return <div>loading...</div>;
                                 }
                                   // Create a JSON object
-                                const vehicleArray = JSON.parse(result.text);
-                                this.state.numberOfVehicles = vehicleArray.data.length;
+                                this.state.vehicleArray = JSON.parse(result.text);
+                                this.state.numberOfVehicles = this.state.vehicleArray.included.length;
 
                                   // Array of carInfo components to return
                                 const returnValue = [];
 
                                   // For each vehicle in the result
-                                for (let i = 0; i < vehicleArray.data.length; i++) {
+                                for (let i = 0; i < this.state.vehicleArray.included.length; i++) {
                                     // Create a new car info component, key is needed for React to render an array
                                   returnValue.push(<CarInfo key={i.toString()}
                                                number={i}
-                                               license={vehicleArray.data[i].attributes.license}
-                                               origin={vehicleArray.data[i].attributes.origin}
-                                               destination={vehicleArray.data[i].attributes.destination}
-                                               startTime={vehicleArray.data[i].attributes.startTime}
-                                               duration={vehicleArray.data[i].attributes.duration}
-                                               id={vehicleArray.data[i].id}
+                                               license={this.state.vehicleArray.included[i].attributes.license}
+                                               origin={this.state.vehicleArray.included[i].attributes.origin}
+                                               destination={this.state.vehicleArray.included[i].attributes.destination}
+                                               startTime={this.state.vehicleArray.included[i].attributes.startTime}
+                                               duration={this.state.vehicleArray.included[i].attributes.duration}
+                                               id={this.state.vehicleArray.included[i].id}
                                                             callback = {this.refresh}
                                     />);
                                 }
-                                return <span>{returnValue}</span>;
+                                  return <div className="row small-up-1 medium-up-1 large-up-2">{returnValue}</div>;
                               }
                             }
                         </Request>
 
                     </div>
-              {console.log('rerender')};
                     <div className="row column">
                         <a className="button hollow expanded">Load More</a>
                     </div>
@@ -138,6 +137,7 @@ class Home extends React.Component {
 
   // Send the request to the server to add a new car
   addCarRequest() {
+      const that =this;
     const data = {
       data: {
         type: 'vehicles',
@@ -157,11 +157,25 @@ class Home extends React.Component {
     xhr.send(JSON.stringify(data));
 
     xhr.onreadystatechange = processRequest;
-
     function processRequest() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        console.log(response);
+      if (xhr.readyState === 4 && xhr.status === 201) {
+        const response = JSON.parse(String(xhr.response));
+        console.log("Id :" + response.data.id);
+        const vehicleData = {
+            data: [{
+                type: 'vehicles',
+                id : response.data.id
+            }]
+        }
+        const addRelationship = new XMLHttpRequest();
+          addRelationship.open('POST', `http://localhost:3000/api/users/${that.props.user.userId}/relationships/vehicles`, true);
+          addRelationship.setRequestHeader('Content-Type', 'application/vnd.api+json');
+          addRelationship.send(JSON.stringify(vehicleData));
+
+          addRelationship.onreadystatechange = process;
+          function process() {
+              console.log("Status" + addRelationship.status);
+          }
       }
     }
   }
