@@ -6,7 +6,8 @@ export default class CarInfo extends React.Component {
     this.state = {
       progression: 0,
       finished: false,
-      inputDestination: ''
+      inputDestination: '',
+      iconValue: Math.floor(Math.random() * 10)
     };
 
     this.update = this.update.bind(this);
@@ -104,12 +105,13 @@ export default class CarInfo extends React.Component {
   updateTrip() {
     // Create the data JSON to send
     const data = {data: {
+      id: this.props.id.toString(),
       type: 'vehicles',
       attributes:
       {
         origin: this.props.destination,
         destination: this.state.inputDestination,
-        duration: 10000000,
+        duration: 100000,
         startTime: new Date().getTime()
       }
     }};
@@ -142,7 +144,7 @@ export default class CarInfo extends React.Component {
           <p className="lead"><b>Car {this.props.number}</b></p>
           <div className="row">
             <p className="small-6 columns">
-              <img src="http://placehold.it/400x370&text=Pegasi B" alt="image of a planet called Pegasi B"/>
+              <img src={"/assets/img/CarIcon"+this.state.iconValue.toString()+".png"} alt="Car icon"/>
             </p>
             <div className="small-6 columns">
               <p className="lead"><b>License :</b> {this.props.license}</p>

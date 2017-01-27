@@ -48,12 +48,14 @@ class Home extends React.Component {
                     <div className="row">
 
                         <div className="medium-7 large-6 columns">
-                            <h1>Manage your awesome fleet</h1>
-                            <p className="subheader">Create VroomVrooms, delete VroomVrooms and send them wherever you want.</p>
+                            <h2><center><b><p>Manage your awesome fleet</p></b></center></h2>
+                            <p className="subheader">Welcome to our app! You can add cars on the right. There are no limitations to the number of car you can add. You can check your car progression without reloading the page, it should update itself.</p>
+                            <p className="subheader">Once the trip is done, you can then set up another trip for this car. You can also delete a car at any time.</p>
+                            <p className="subheader">We speeded up the time so you don't have to wait for hours.</p>
                         </div>
 
                         <div className="show-for-large large-3 columns">
-                            <img src="http://placehold.it/400x370&text=PSR1257 + 12 C" alt="picture of space"/>
+                          <img src="/assets/img/CarBanner.png" alt="picture"/>
                         </div>
 
                         <div className="medium-5 large-3 columns">
@@ -79,7 +81,6 @@ class Home extends React.Component {
                                 </form>
                             </div>
                         </div>
-
                     </div>
 
                     <div className="row column">
@@ -87,7 +88,7 @@ class Home extends React.Component {
                     </div>
 
                     <div className="row column">
-                        <p className="lead">Cars :</p>
+                        <p className="lead"><b>Your cars :</b></p>
                     </div>
                 <div>
                       <Request
@@ -145,7 +146,7 @@ class Home extends React.Component {
           license: this.state.inputLicense,
           origin: this.state.inputOrigin,
           destination: this.state.inputDestination,
-          duration: 10000000,
+          duration: 100000,
           startTime: new Date().getTime()
         }
       }
@@ -166,7 +167,7 @@ class Home extends React.Component {
                 type: 'vehicles',
                 id : response.data.id
             }]
-        }
+        };
         const addRelationship = new XMLHttpRequest();
           addRelationship.open('POST', `http://localhost:3000/api/users/${that.props.user.userId}/relationships/vehicles`, true);
           addRelationship.setRequestHeader('Content-Type', 'application/vnd.api+json');
